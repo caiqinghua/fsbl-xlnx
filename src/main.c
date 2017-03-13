@@ -256,6 +256,9 @@ int main(void)
 		FsblHookFallback();
 	}
 
+	TurnOffBeep();
+    KeepHashBoardReset();
+
 	/*
 	 * Unlock SLCR for SLCR register write
 	 */
@@ -939,6 +942,19 @@ void ClearFSBLIn(void)
 {
 	Xil_Out32(REBOOT_STATUS_REG,
 		(Xil_In32(REBOOT_STATUS_REG)) &	~(FSBL_FAIL_MASK));
+}
+
+void TurnOffBeep(void)
+{
+	Xil_Out32(0xe000a244, 0x00000080);
+	Xil_Out32(0xe000a248, 0x00000080);
+}
+
+void KeepHashBoardReset(void)
+{
+	Xil_Out32(0xe000a284, 0x00000015);
+	Xil_Out32(0xe000a288, 0x00000015);
+	Xil_Out32(0xe000a048, 0x00000000);
 }
 
 /******************************************************************************/
